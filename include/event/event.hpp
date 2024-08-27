@@ -51,6 +51,17 @@ namespace evhpp
         no_exit_on_empty,
     };
 
+    std::list<std::string> get_supported_methods();
+
+    class event_mask
+    {
+    public:
+        event_mask(short event);
+        bool has_flag(event_flag flag) const;
+    private:
+        short _event;
+    };
+
     class event : protected basic_type
     {
     public:
@@ -87,14 +98,14 @@ namespace evhpp
 
         void loop(const std::initializer_list<loop_flag> &loop_flags = {});
 
-        void loop_break();
+        void loopbreak();
 
         template <class Rep, class Period = std::ratio<1>>
-        void loop_exit(const std::chrono::duration<Rep, Period> &timeout)
+        void loopexit(const std::chrono::duration<Rep, Period> &timeout)
         {
             struct timeval timeout_tv;
             convert_to_timeval(timeout, &timeout_tv);
-            loop_exit(&timeout_tv);
+            loopexit(&timeout_tv);
         }
 
         std::string get_method() const;
@@ -105,7 +116,7 @@ namespace evhpp
         
     private:
         void construct(const config *config);
-        void loop_exit(const struct timeval *timeout);
+        void loopexit(const struct timeval *timeout);
     };
 
     class config : protected basic_type

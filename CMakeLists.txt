@@ -5,6 +5,8 @@ project(libevent-hpp)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 option(EVENTHPP_VENDORED "Build Libevent from local submodule" OFF)
+option(EVENTHPP_TESTS "Build test suite" OFF)
+option(EVENTHPP_COVER "Build test suite with code coverage" OFF)
 
 file(GLOB EVENTHPP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
 

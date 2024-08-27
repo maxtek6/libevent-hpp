@@ -54,6 +54,23 @@ namespace evhpp
     };
     END_MAP_FLAGS_FUNCTION(map_loop_flags)
 
+    event_mask::event_mask(short event) : _event(event) {}
+
+    bool event_mask::has_flag(event_flag flag) const
+    {
+        const static short flags[] = {
+            EV_TIMEOUT,
+            EV_READ,
+            EV_WRITE,
+            EV_SIGNAL,
+            EV_PERSIST,
+            EV_ET,
+            EV_FINALIZE,
+            EV_CLOSED,
+        };
+        return (_event & flags[flag]) > 0;
+    }
+
     event::event(base &base, socket_type fd, const std::initializer_list<event_flag> &event_flags, const event_callback &callback)
     {
         evhpp::accessor<internal::base> base_accessor(&base);
@@ -116,7 +133,7 @@ namespace evhpp
         event_base_loop(get_handle<internal::base>(), map_loop_flags(loop_flags));
     }
 
-    void base::loop_break()
+    void base::loopbreak()
     {
         event_base_loopbreak(get_handle<internal::base>());
     }
@@ -136,7 +153,7 @@ namespace evhpp
         return event_base_get_max_events(get_handle<internal::base>(), map_count_flags(count_flags), clear ? 1 : 0);
     }
 
-    void base::loop_exit(const struct timeval *timeout)
+    void base::loopexit(const struct timeval *timeout)
     {
         event_base_loopexit(get_handle<internal::base>(), timeout);
     }

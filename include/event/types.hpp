@@ -5,6 +5,7 @@
 #include <functional>
 #include <initializer_list>
 #include <memory>
+#include <list>
 #include <stdexcept>
 #include <type_traits>
 #include <unordered_map>
@@ -17,11 +18,12 @@ namespace evhpp
     using socket_type = int;
 #endif
 
+    class event_mask;
     class event;
     class base;
     class config;
 
-    using event_callback = std::function<void(socket_type)>;
+    using event_callback = std::function<void(socket_type, event_mask)>;
 
     class basic_type
     {
@@ -44,6 +46,7 @@ namespace evhpp
             };
             _handle = std::unique_ptr<void, std::function<void(void *)>>(handle, opaque_deleter);
         }
+
     public:
         std::unique_ptr<void, std::function<void(void *)>> _handle;
     };
